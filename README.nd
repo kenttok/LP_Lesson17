@@ -7,44 +7,15 @@
 [root@selinux ~]# nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
+
 [root@selinux ~]# getenforce
 Enforcing
+
 [root@selinux ~]# cat /var/log/audit/audit.log | grep 4881
 type=AVC msg=audit(1688657579.797:780): avc:  denied  { name_bind } for  pid=2742 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
 [root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audi
 audispd   auditctl  auditd    
-[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audi
-audispd   auditctl  auditd    
-[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audit2why
-bash: audit2why: command not found
-[root@selinux ~]# yum install audit2why
-Failed to set locale, defaulting to C
-Loaded plugins: fastestmirror
-Loading mirror speeds from cached hostfile
-epel/x86_64/metalink                                    |  12 kB     00:00     
- * base: mirror.docker.ru
- * epel: fedora-mirror02.rbc.ru
- * extras: mirror.docker.ru
- * updates: mirrors.datahouse.ru
-base                                                    | 3.6 kB     00:00     
-epel                                                    | 4.7 kB     00:00     
-extras                                                  | 2.9 kB     00:00     
-updates                                                 | 2.9 kB     00:00     
-epel/x86_64/primary_db         FAILED                                          
-http://mirror.logol.ru/epel/7/x86_64/repodata/ceb3c5ac5b182fe7a98da812f1a11c405cd769a12deead4a51f816e0ffe0aca3-primary.sqlite.bz2: [Errno 14] HTTP Error 404 - Not Found
-Trying other mirror.
-To address this issue please refer to the below wiki article 
 
-https://wiki.centos.org/yum-errors
-
-If above article doesn't help to resolve this issue please use https://bugs.centos.org/.
-
-(1/2): epel/x86_64/updateinfo                             | 1.0 MB   00:00     
-(2/2): epel/x86_64/primary_db                             | 7.0 MB   00:01     
-No package audit2why available.
-Error: Nothing to do
-[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audit2why
-bash: audit2why: command not found
 [root@selinux ~]# yum install policycoreutils-python
 Failed to set locale, defaulting to C
 Loaded plugins: fastestmirror
@@ -139,6 +110,7 @@ Dependency Installed:
   setools-libs.x86_64 0:3.3.8-4.el7                                            
 
 Complete!
+
 [root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audit2why
 type=AVC msg=audit(1688657579.797:780): avc:  denied  { name_bind } for  pid=2742 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
 
@@ -149,8 +121,11 @@ type=AVC msg=audit(1688657579.797:780): avc:  denied  { name_bind } for  pid=274
 
         Allow access by executing:
         # setsebool -P nis_enabled 1
+
 [root@selinux ~]# setsebool -P nis_enabled on
+
 [root@selinux ~]# systemctl restart nginx
+
 [root@selinux ~]# systemctl status nginx
 ● nginx.service - The nginx HTTP and reverse proxy server
    Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
@@ -168,6 +143,7 @@ Jul 10 06:52:06 selinux nginx[23436]: nginx: the configuration file /etc/n...ok
 Jul 10 06:52:06 selinux nginx[23436]: nginx: configuration file /etc/nginx...ul
 Jul 10 06:52:06 selinux systemd[1]: Started The nginx HTTP and reverse pro...r.
 Hint: Some lines were ellipsized, use -l to show in full.
+
 [root@selinux ~]# curl http://127.0.0.1:4881
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -326,9 +302,12 @@ href="http://wiki.centos.org/FAQ/">FAQ</a>.</p>
 </body>
 </html>
 [root@selinux ~]# 
+
 [root@selinux ~]# getsebool -a | grep nis_enabled
 nis_enabled --> on
+
 [root@selinux ~]# setsebool -P nis_enabled off
+
 [root@selinux ~]# systemctl status nginx
 ● nginx.service - The nginx HTTP and reverse proxy server
    Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
@@ -1362,3 +1341,50 @@ zosremote       1.2.0
 libsemanage.semanage_direct_remove_key: Removing last nginx module (no other nginx module exists at another priority).
 
 Часть 2
+
+Проверим права named на смену зон:
+
+[root@ns01 ~]# getsebool -a | grep named
+named_tcp_bind_http_port --> off
+named_write_master_zones --> on
+Проанализируем audit.log:
+
+[root@ns01 ~]# cat /var/log/audit/audit.log | audit2why
+type=AVC msg=audit(1688657579.797:780): avc:  denied  { create } for  pid=5103 comm="isc-worker0000" name="named.ddns.lab.view1.jnl" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=0
+    Was caused by:
+        Missing type enforcement (TE) allow rule.
+        You can use audit2allow to generate a loadable module to allow this access.
+Изменим тип контекста безопасности для каталога /etc/named:
+
+sudo chcon -R -t named_zone_t /etc/named
+Перезагрузимся и проверим:
+
+[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
+> quit    
+[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab       
+> update add www.ddns.lab. 60 A 192.168.50.15
+> sent
+incorrect section name: sent
+> send
+> quit
+[vagrant@client ~]$ dig www.ddns.lab
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.10 <<>> www.ddns.lab
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 631
+;; flags: qr rd ra ad; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;www.ddns.lab.          IN  A
+
+;; AUTHORITY SECTION:
+.           86399   IN  SOA a.root-servers.net. nstld.verisign-grs.com. 2022102700 1800 900 604800 86400
+
+;; Query time: 26 msec
+;; SERVER: 10.0.2.3#53(10.0.2.3)
+;; MSG SIZE  rcvd: 116
