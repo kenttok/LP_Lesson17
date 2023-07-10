@@ -1,0 +1,1364 @@
+Часть 1
+[root@selinux ~]# systemctl status firewalld
+● firewalld.service - firewalld - dynamic firewall daemon
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; disabled; vendor preset: enabled)
+   Active: inactive (dead)
+     Docs: man:firewalld(1)
+[root@selinux ~]# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+[root@selinux ~]# getenforce
+Enforcing
+[root@selinux ~]# cat /var/log/audit/audit.log | grep 4881
+type=AVC msg=audit(1688657579.797:780): avc:  denied  { name_bind } for  pid=2742 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audi
+audispd   auditctl  auditd    
+[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audi
+audispd   auditctl  auditd    
+[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audit2why
+bash: audit2why: command not found
+[root@selinux ~]# yum install audit2why
+Failed to set locale, defaulting to C
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+epel/x86_64/metalink                                    |  12 kB     00:00     
+ * base: mirror.docker.ru
+ * epel: fedora-mirror02.rbc.ru
+ * extras: mirror.docker.ru
+ * updates: mirrors.datahouse.ru
+base                                                    | 3.6 kB     00:00     
+epel                                                    | 4.7 kB     00:00     
+extras                                                  | 2.9 kB     00:00     
+updates                                                 | 2.9 kB     00:00     
+epel/x86_64/primary_db         FAILED                                          
+http://mirror.logol.ru/epel/7/x86_64/repodata/ceb3c5ac5b182fe7a98da812f1a11c405cd769a12deead4a51f816e0ffe0aca3-primary.sqlite.bz2: [Errno 14] HTTP Error 404 - Not Found
+Trying other mirror.
+To address this issue please refer to the below wiki article 
+
+https://wiki.centos.org/yum-errors
+
+If above article doesn't help to resolve this issue please use https://bugs.centos.org/.
+
+(1/2): epel/x86_64/updateinfo                             | 1.0 MB   00:00     
+(2/2): epel/x86_64/primary_db                             | 7.0 MB   00:01     
+No package audit2why available.
+Error: Nothing to do
+[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audit2why
+bash: audit2why: command not found
+[root@selinux ~]# yum install policycoreutils-python
+Failed to set locale, defaulting to C
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirror.awanti.com
+ * epel: mirror.logol.ru
+ * extras: mirror.awanti.com
+ * updates: mirror.awanti.com
+Resolving Dependencies
+--> Running transaction check
+---> Package policycoreutils-python.x86_64 0:2.5-34.el7 will be installed
+--> Processing Dependency: setools-libs >= 3.3.8-4 for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libsemanage-python >= 2.5-14 for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: audit-libs-python >= 2.1.3-4 for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: python-IPy for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libqpol.so.1(VERS_1.4)(64bit) for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libqpol.so.1(VERS_1.2)(64bit) for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libcgroup for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libapol.so.4(VERS_4.0)(64bit) for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: checkpolicy for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libqpol.so.1()(64bit) for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Processing Dependency: libapol.so.4()(64bit) for package: policycoreutils-python-2.5-34.el7.x86_64
+--> Running transaction check
+---> Package audit-libs-python.x86_64 0:2.8.5-4.el7 will be installed
+---> Package checkpolicy.x86_64 0:2.5-8.el7 will be installed
+---> Package libcgroup.x86_64 0:0.41-21.el7 will be installed
+---> Package libsemanage-python.x86_64 0:2.5-14.el7 will be installed
+---> Package python-IPy.noarch 0:0.75-6.el7 will be installed
+---> Package setools-libs.x86_64 0:3.3.8-4.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+===============================================================================
+ Package                      Arch         Version            Repository  Size
+===============================================================================
+Installing:
+ policycoreutils-python       x86_64       2.5-34.el7         base       457 k
+Installing for dependencies:
+ audit-libs-python            x86_64       2.8.5-4.el7        base        76 k
+ checkpolicy                  x86_64       2.5-8.el7          base       295 k
+ libcgroup                    x86_64       0.41-21.el7        base        66 k
+ libsemanage-python           x86_64       2.5-14.el7         base       113 k
+ python-IPy                   noarch       0.75-6.el7         base        32 k
+ setools-libs                 x86_64       3.3.8-4.el7        base       620 k
+
+Transaction Summary
+===============================================================================
+Install  1 Package (+6 Dependent packages)
+
+Total download size: 1.6 M
+Installed size: 5.3 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/7): audit-libs-python-2.8.5-4.el7.x86_64.rpm           |  76 kB   00:00     
+(2/7): checkpolicy-2.5-8.el7.x86_64.rpm                   | 295 kB   00:00     
+(3/7): libcgroup-0.41-21.el7.x86_64.rpm                   |  66 kB   00:00     
+(4/7): libsemanage-python-2.5-14.el7.x86_64.rpm           | 113 kB   00:00     
+(5/7): python-IPy-0.75-6.el7.noarch.rpm                   |  32 kB   00:00     
+(6/7): setools-libs-3.3.8-4.el7.x86_64.rpm                | 620 kB   00:00     
+(7/7): policycoreutils-python-2.5-34.el7.x86_64.rpm       | 457 kB   00:00     
+-------------------------------------------------------------------------------
+Total                                             4.1 MB/s | 1.6 MB  00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : libcgroup-0.41-21.el7.x86_64                                1/7 
+  Installing : setools-libs-3.3.8-4.el7.x86_64                             2/7 
+  Installing : audit-libs-python-2.8.5-4.el7.x86_64                        3/7 
+  Installing : python-IPy-0.75-6.el7.noarch                                4/7 
+  Installing : libsemanage-python-2.5-14.el7.x86_64                        5/7 
+  Installing : checkpolicy-2.5-8.el7.x86_64                                6/7 
+  Installing : policycoreutils-python-2.5-34.el7.x86_64                    7/7 
+  Verifying  : checkpolicy-2.5-8.el7.x86_64                                1/7 
+  Verifying  : libsemanage-python-2.5-14.el7.x86_64                        2/7 
+  Verifying  : python-IPy-0.75-6.el7.noarch                                3/7 
+  Verifying  : policycoreutils-python-2.5-34.el7.x86_64                    4/7 
+  Verifying  : audit-libs-python-2.8.5-4.el7.x86_64                        5/7 
+  Verifying  : setools-libs-3.3.8-4.el7.x86_64                             6/7 
+  Verifying  : libcgroup-0.41-21.el7.x86_64                                7/7 
+
+Installed:
+  policycoreutils-python.x86_64 0:2.5-34.el7                                   
+
+Dependency Installed:
+  audit-libs-python.x86_64 0:2.8.5-4.el7                                       
+  checkpolicy.x86_64 0:2.5-8.el7                                               
+  libcgroup.x86_64 0:0.41-21.el7                                               
+  libsemanage-python.x86_64 0:2.5-14.el7                                       
+  python-IPy.noarch 0:0.75-6.el7                                               
+  setools-libs.x86_64 0:3.3.8-4.el7                                            
+
+Complete!
+[root@selinux ~]# grep 1688657579.797:780 /var/log/audit/audit.log | audit2why
+type=AVC msg=audit(1688657579.797:780): avc:  denied  { name_bind } for  pid=2742 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+
+        Was caused by:
+        The boolean nis_enabled was set incorrectly. 
+        Description:
+        Allow nis to enabled
+
+        Allow access by executing:
+        # setsebool -P nis_enabled 1
+[root@selinux ~]# setsebool -P nis_enabled on
+[root@selinux ~]# systemctl restart nginx
+[root@selinux ~]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Mon 2023-07-10 06:52:06 UTC; 11s ago
+  Process: 23439 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 23436 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 23435 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 23441 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─23441 nginx: master process /usr/sbin/nginx
+           └─23443 nginx: worker process
+
+Jul 10 06:52:06 selinux systemd[1]: Starting The nginx HTTP and reverse pr.....
+Jul 10 06:52:06 selinux nginx[23436]: nginx: the configuration file /etc/n...ok
+Jul 10 06:52:06 selinux nginx[23436]: nginx: configuration file /etc/nginx...ul
+Jul 10 06:52:06 selinux systemd[1]: Started The nginx HTTP and reverse pro...r.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@selinux ~]# curl http://127.0.0.1:4881
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Welcome to CentOS</title>
+  <style rel="stylesheet" type="text/css"> 
+
+        html {
+        background-image:url(img/html-background.png);
+        background-color: white;
+        font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+        font-size: 0.85em;
+        line-height: 1.25em;
+        margin: 0 4% 0 4%;
+        }
+
+        body {
+        border: 10px solid #fff;
+        margin:0;
+        padding:0;
+        background: #fff;
+        }
+
+        /* Links */
+
+        a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+        a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+        a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+        .logo a:link,
+        .logo a:hover,
+        .logo a:visited { border-bottom: none; }
+
+        .mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+        .mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+        .mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+        /* User interface styles */
+
+        #header {
+        margin:0;
+        padding: 0.5em;
+        background: #204D8C url(img/header-background.png);
+        text-align: left;
+        }
+
+        .logo {
+        padding: 0;
+        /* For text only logo */
+        font-size: 1.4em;
+        line-height: 1em;
+        font-weight: bold;
+        }
+
+        .logo img {
+        vertical-align: middle;
+        padding-right: 1em;
+        }
+
+        .logo a {
+        color: #fff;
+        text-decoration: none;
+        }
+
+        p {
+        line-height:1.5em;
+        }
+
+        h1 { 
+                margin-bottom: 0;
+                line-height: 1.9em; }
+        h2 { 
+                margin-top: 0;
+                line-height: 1.7em; }
+
+        #content {
+        clear:both;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        border-bottom: 5px solid #eee;
+        }
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div id="header">
+
+    <ul class="mainlinks">
+        <li> <a href="http://www.centos.org/">Home</a> </li>
+        <li> <a href="http://wiki.centos.org/">Wiki</a> </li>
+        <li> <a href="http://wiki.centos.org/GettingHelp/ListInfo">Mailing Lists</a></li>
+        <li> <a href="http://www.centos.org/download/mirrors/">Mirror List</a></li>
+        <li> <a href="http://wiki.centos.org/irc">IRC</a></li>
+        <li> <a href="https://www.centos.org/forums/">Forums</a></li>
+        <li> <a href="http://bugs.centos.org/">Bugs</a> </li>
+        <li class="last"> <a href="http://wiki.centos.org/Donate">Donate</a></li>
+    </ul>
+
+        <div class="logo">
+                <a href="http://www.centos.org/"><img src="img/centos-logo.png" border="0"></a>
+        </div>
+
+</div>
+
+<div id="content">
+
+        <h1>Welcome to CentOS</h1>
+
+        <h2>The Community ENTerprise Operating System</h2>
+
+        <p><a href="http://www.centos.org/">CentOS</a> is an Enterprise-class Linux Distribution derived from sources freely provided
+to the public by Red Hat, Inc. for Red Hat Enterprise Linux.  CentOS conforms fully with the upstream vendors
+redistribution policy and aims to be functionally compatible. (CentOS mainly changes packages to remove upstream vendor
+branding and artwork.)</p>
+
+        <p>CentOS is developed by a small but growing team of core
+developers.&nbsp; In turn the core developers are supported by an active user community
+including system administrators, network administrators, enterprise users, managers, core Linux contributors and Linux enthusiasts from around the world.</p>
+
+        <p>CentOS has numerous advantages including: an active and growing user community, quickly rebuilt, tested, and QA'ed errata packages, an extensive <a href="http://www.centos.org/download/mirrors/">mirror network</a>, developers who are contactable and responsive, Special Interest Groups (<a href="http://wiki.centos.org/SpecialInterestGroup/">SIGs</a>) to add functionality to the core CentOS distribution, and multiple community support avenues including a <a href="http://wiki.centos.org/">wiki</a>, <a
+href="http://wiki.centos.org/irc">IRC Chat</a>, <a href="http://wiki.centos.org/GettingHelp/ListInfo">Email Lists</a>, <a href="https://www.centos.org/forums/">Forums</a>, <a href="http://bugs.centos.org/">Bugs Database</a>, and an <a
+href="http://wiki.centos.org/FAQ/">FAQ</a>.</p>
+
+        </div>
+
+</div>
+
+
+</body>
+</html>
+[root@selinux ~]# 
+[root@selinux ~]# getsebool -a | grep nis_enabled
+nis_enabled --> on
+[root@selinux ~]# setsebool -P nis_enabled off
+[root@selinux ~]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Mon 2023-07-10 06:52:06 UTC; 3min 8s ago
+  Process: 23439 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 23436 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 23435 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 23441 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─23441 nginx: master process /usr/sbin/nginx
+           └─23443 nginx: worker process
+
+Jul 10 06:52:06 selinux systemd[1]: Starting The nginx HTTP and reverse pr.....
+Jul 10 06:52:06 selinux nginx[23436]: nginx: the configuration file /etc/n...ok
+Jul 10 06:52:06 selinux nginx[23436]: nginx: configuration file /etc/nginx...ul
+Jul 10 06:52:06 selinux systemd[1]: Started The nginx HTTP and reverse pro...r.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@selinux ~]# date
+Mon Jul 10 06:55:23 UTC 2023
+[root@selinux ~]# curl http://127.0.0.1:4881
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Welcome to CentOS</title>
+  <style rel="stylesheet" type="text/css"> 
+
+        html {
+        background-image:url(img/html-background.png);
+        background-color: white;
+        font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+        font-size: 0.85em;
+        line-height: 1.25em;
+        margin: 0 4% 0 4%;
+        }
+
+        body {
+        border: 10px solid #fff;
+        margin:0;
+        padding:0;
+        background: #fff;
+        }
+
+        /* Links */
+
+        a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+        a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+        a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+        .logo a:link,
+        .logo a:hover,
+        .logo a:visited { border-bottom: none; }
+
+        .mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+        .mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+        .mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+        /* User interface styles */
+
+        #header {
+        margin:0;
+        padding: 0.5em;
+        background: #204D8C url(img/header-background.png);
+        text-align: left;
+        }
+
+        .logo {
+        padding: 0;
+        /* For text only logo */
+        font-size: 1.4em;
+        line-height: 1em;
+        font-weight: bold;
+        }
+
+        .logo img {
+        vertical-align: middle;
+        padding-right: 1em;
+        }
+
+        .logo a {
+        color: #fff;
+        text-decoration: none;
+        }
+
+        p {
+        line-height:1.5em;
+        }
+
+        h1 { 
+                margin-bottom: 0;
+                line-height: 1.9em; }
+        h2 { 
+                margin-top: 0;
+                line-height: 1.7em; }
+
+        #content {
+        clear:both;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        border-bottom: 5px solid #eee;
+        }
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div id="header">
+
+    <ul class="mainlinks">
+        <li> <a href="http://www.centos.org/">Home</a> </li>
+        <li> <a href="http://wiki.centos.org/">Wiki</a> </li>
+        <li> <a href="http://wiki.centos.org/GettingHelp/ListInfo">Mailing Lists</a></li>
+        <li> <a href="http://www.centos.org/download/mirrors/">Mirror List</a></li>
+        <li> <a href="http://wiki.centos.org/irc">IRC</a></li>
+        <li> <a href="https://www.centos.org/forums/">Forums</a></li>
+        <li> <a href="http://bugs.centos.org/">Bugs</a> </li>
+        <li class="last"> <a href="http://wiki.centos.org/Donate">Donate</a></li>
+    </ul>
+
+        <div class="logo">
+                <a href="http://www.centos.org/"><img src="img/centos-logo.png" border="0"></a>
+        </div>
+
+</div>
+
+<div id="content">
+
+        <h1>Welcome to CentOS</h1>
+
+        <h2>The Community ENTerprise Operating System</h2>
+
+        <p><a href="http://www.centos.org/">CentOS</a> is an Enterprise-class Linux Distribution derived from sources freely provided
+to the public by Red Hat, Inc. for Red Hat Enterprise Linux.  CentOS conforms fully with the upstream vendors
+redistribution policy and aims to be functionally compatible. (CentOS mainly changes packages to remove upstream vendor
+branding and artwork.)</p>
+
+        <p>CentOS is developed by a small but growing team of core
+developers.&nbsp; In turn the core developers are supported by an active user community
+including system administrators, network administrators, enterprise users, managers, core Linux contributors and Linux enthusiasts from around the world.</p>
+
+        <p>CentOS has numerous advantages including: an active and growing user community, quickly rebuilt, tested, and QA'ed errata packages, an extensive <a href="http://www.centos.org/download/mirrors/">mirror network</a>, developers who are contactable and responsive, Special Interest Groups (<a href="http://wiki.centos.org/SpecialInterestGroup/">SIGs</a>) to add functionality to the core CentOS distribution, and multiple community support avenues including a <a href="http://wiki.centos.org/">wiki</a>, <a
+href="http://wiki.centos.org/irc">IRC Chat</a>, <a href="http://wiki.centos.org/GettingHelp/ListInfo">Email Lists</a>, <a href="https://www.centos.org/forums/">Forums</a>, <a href="http://bugs.centos.org/">Bugs Database</a>, and an <a
+href="http://wiki.centos.org/FAQ/">FAQ</a>.</p>
+
+        </div>
+
+</div>
+
+
+</body>
+</html>
+[root@selinux ~]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Mon 2023-07-10 06:52:06 UTC; 3min 49s ago
+  Process: 23439 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 23436 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 23435 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 23441 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─23441 nginx: master process /usr/sbin/nginx
+           └─23443 nginx: worker process
+
+Jul 10 06:52:06 selinux systemd[1]: Starting The nginx HTTP and reverse pr.....
+Jul 10 06:52:06 selinux nginx[23436]: nginx: the configuration file /etc/n...ok
+Jul 10 06:52:06 selinux nginx[23436]: nginx: configuration file /etc/nginx...ul
+Jul 10 06:52:06 selinux systemd[1]: Started The nginx HTTP and reverse pro...r.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@selinux ~]# systemctl restart nginx
+Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
+[root@selinux ~]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: failed (Result: exit-code) since Mon 2023-07-10 06:56:08 UTC; 3s ago
+  Process: 23439 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 23467 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=1/FAILURE)
+  Process: 23466 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 23441 (code=exited, status=0/SUCCESS)
+
+Jul 10 06:56:08 selinux systemd[1]: Stopped The nginx HTTP and reverse pro...r.
+Jul 10 06:56:08 selinux systemd[1]: Starting The nginx HTTP and reverse pr.....
+Jul 10 06:56:08 selinux nginx[23467]: nginx: the configuration file /etc/n...ok
+Jul 10 06:56:08 selinux nginx[23467]: nginx: [emerg] bind() to 0.0.0.0:488...d)
+Jul 10 06:56:08 selinux nginx[23467]: nginx: configuration file /etc/nginx...ed
+Jul 10 06:56:08 selinux systemd[1]: nginx.service: control process exited,...=1
+Jul 10 06:56:08 selinux systemd[1]: Failed to start The nginx HTTP and rev...r.
+Jul 10 06:56:08 selinux systemd[1]: Unit nginx.service entered failed state.
+Jul 10 06:56:08 selinux systemd[1]: nginx.service failed.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@selinux ~]# semanage port -l | grep http
+http_cache_port_t              tcp      8080, 8118, 8123, 10001-10010
+http_cache_port_t              udp      3130
+http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+pegasus_https_port_t           tcp      5989
+[root@selinux ~]# emanage port -a -t http_port_t -p tcp 4881
+bash: emanage: command not found
+[root@selinux ~]# semanage port -a -t http_port_t -p tcp 4881
+[root@selinux ~]# semanage port -l | grep http
+http_cache_port_t              tcp      8080, 8118, 8123, 10001-10010
+http_cache_port_t              udp      3130
+http_port_t                    tcp      4881, 80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+pegasus_https_port_t           tcp      5989
+[root@selinux ~]# systemctl restart nginx
+[root@selinux ~]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Mon 2023-07-10 06:57:22 UTC; 6s ago
+  Process: 23493 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 23491 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 23490 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 23495 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─23495 nginx: master process /usr/sbin/nginx
+           └─23497 nginx: worker process
+
+Jul 10 06:57:22 selinux systemd[1]: Starting The nginx HTTP and reverse pr.....
+Jul 10 06:57:22 selinux nginx[23491]: nginx: the configuration file /etc/n...ok
+Jul 10 06:57:22 selinux nginx[23491]: nginx: configuration file /etc/nginx...ul
+Jul 10 06:57:22 selinux systemd[1]: Started The nginx HTTP and reverse pro...r.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@selinux ~]# curl http://127.0.0.1:4881
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Welcome to CentOS</title>
+  <style rel="stylesheet" type="text/css"> 
+
+        html {
+        background-image:url(img/html-background.png);
+        background-color: white;
+        font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+        font-size: 0.85em;
+        line-height: 1.25em;
+        margin: 0 4% 0 4%;
+        }
+
+        body {
+        border: 10px solid #fff;
+        margin:0;
+        padding:0;
+        background: #fff;
+        }
+
+        /* Links */
+
+        a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+        a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+        a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+        .logo a:link,
+        .logo a:hover,
+        .logo a:visited { border-bottom: none; }
+
+        .mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+        .mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+        .mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+        /* User interface styles */
+
+        #header {
+        margin:0;
+        padding: 0.5em;
+        background: #204D8C url(img/header-background.png);
+        text-align: left;
+        }
+
+        .logo {
+        padding: 0;
+        /* For text only logo */
+        font-size: 1.4em;
+        line-height: 1em;
+        font-weight: bold;
+        }
+
+        .logo img {
+        vertical-align: middle;
+        padding-right: 1em;
+        }
+
+        .logo a {
+        color: #fff;
+        text-decoration: none;
+        }
+
+        p {
+        line-height:1.5em;
+        }
+
+        h1 { 
+                margin-bottom: 0;
+                line-height: 1.9em; }
+        h2 { 
+                margin-top: 0;
+                line-height: 1.7em; }
+
+        #content {
+        clear:both;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        border-bottom: 5px solid #eee;
+        }
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div id="header">
+
+    <ul class="mainlinks">
+        <li> <a href="http://www.centos.org/">Home</a> </li>
+        <li> <a href="http://wiki.centos.org/">Wiki</a> </li>
+        <li> <a href="http://wiki.centos.org/GettingHelp/ListInfo">Mailing Lists</a></li>
+        <li> <a href="http://www.centos.org/download/mirrors/">Mirror List</a></li>
+        <li> <a href="http://wiki.centos.org/irc">IRC</a></li>
+        <li> <a href="https://www.centos.org/forums/">Forums</a></li>
+        <li> <a href="http://bugs.centos.org/">Bugs</a> </li>
+        <li class="last"> <a href="http://wiki.centos.org/Donate">Donate</a></li>
+    </ul>
+
+        <div class="logo">
+                <a href="http://www.centos.org/"><img src="img/centos-logo.png" border="0"></a>
+        </div>
+
+</div>
+
+<div id="content">
+
+        <h1>Welcome to CentOS</h1>
+
+        <h2>The Community ENTerprise Operating System</h2>
+
+        <p><a href="http://www.centos.org/">CentOS</a> is an Enterprise-class Linux Distribution derived from sources freely provided
+to the public by Red Hat, Inc. for Red Hat Enterprise Linux.  CentOS conforms fully with the upstream vendors
+redistribution policy and aims to be functionally compatible. (CentOS mainly changes packages to remove upstream vendor
+branding and artwork.)</p>
+
+        <p>CentOS is developed by a small but growing team of core
+developers.&nbsp; In turn the core developers are supported by an active user community
+including system administrators, network administrators, enterprise users, managers, core Linux contributors and Linux enthusiasts from around the world.</p>
+
+        <p>CentOS has numerous advantages including: an active and growing user community, quickly rebuilt, tested, and QA'ed errata packages, an extensive <a href="http://www.centos.org/download/mirrors/">mirror network</a>, developers who are contactable and responsive, Special Interest Groups (<a href="http://wiki.centos.org/SpecialInterestGroup/">SIGs</a>) to add functionality to the core CentOS distribution, and multiple community support avenues including a <a href="http://wiki.centos.org/">wiki</a>, <a
+href="http://wiki.centos.org/irc">IRC Chat</a>, <a href="http://wiki.centos.org/GettingHelp/ListInfo">Email Lists</a>, <a href="https://www.centos.org/forums/">Forums</a>, <a href="http://bugs.centos.org/">Bugs Database</a>, and an <a
+href="http://wiki.centos.org/FAQ/">FAQ</a>.</p>
+
+        </div>
+
+</div>
+
+
+</body>
+</html>
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# semanage port -d -t http_port_t -p tcp 4881
+[root@selinux ~]# semanage port -l | grep  http_port_t
+http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+[root@selinux ~]# systemctl restart nginx
+Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# grep nginx /var/log/audit/audit.log
+type=SOFTWARE_UPDATE msg=audit(1688657579.147:778): pid=2602 uid=0 auid=1000 ses=2 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='sw="nginx-filesystem-1:1.20.1-10.el7.noarch" sw_type=rpm key_enforce=0 gpg_res=1 root_dir="/" comm="yum" exe="/usr/bin/python2.7" hostname=? addr=? terminal=? res=success'
+type=SOFTWARE_UPDATE msg=audit(1688657579.492:779): pid=2602 uid=0 auid=1000 ses=2 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='sw="nginx-1:1.20.1-10.el7.x86_64" sw_type=rpm key_enforce=0 gpg_res=1 root_dir="/" comm="yum" exe="/usr/bin/python2.7" hostname=? addr=? terminal=? res=success'
+type=AVC msg=audit(1688657579.797:780): avc:  denied  { name_bind } for  pid=2742 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+type=SYSCALL msg=audit(1688657579.797:780): arch=c000003e syscall=49 success=no exit=-13 a0=6 a1=557036211878 a2=10 a3=7ffc20ad5010 items=0 ppid=1 pid=2742 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nginx" exe="/usr/sbin/nginx" subj=system_u:system_r:httpd_t:s0 key=(null)
+type=SERVICE_START msg=audit(1688657579.800:781): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+type=SERVICE_START msg=audit(1688971926.579:1505): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=SERVICE_STOP msg=audit(1688972168.345:1510): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=AVC msg=audit(1688972168.365:1511): avc:  denied  { name_bind } for  pid=23467 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+type=SYSCALL msg=audit(1688972168.365:1511): arch=c000003e syscall=49 success=no exit=-13 a0=6 a1=559090ef2878 a2=10 a3=7ffdf6a1efc0 items=0 ppid=1 pid=23467 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nginx" exe="/usr/sbin/nginx" subj=system_u:system_r:httpd_t:s0 key=(null)
+type=SERVICE_START msg=audit(1688972168.365:1512): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+type=SERVICE_START msg=audit(1688972242.509:1516): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=SERVICE_STOP msg=audit(1688972309.277:1520): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=AVC msg=audit(1688972309.304:1521): avc:  denied  { name_bind } for  pid=23518 comm="nginx" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+type=SYSCALL msg=audit(1688972309.304:1521): arch=c000003e syscall=49 success=no exit=-13 a0=6 a1=560fb1ad1878 a2=10 a3=7ffed84d6560 items=0 ppid=1 pid=23518 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="nginx" exe="/usr/sbin/nginx" subj=system_u:system_r:httpd_t:s0 key=(null)
+type=SERVICE_START msg=audit(1688972309.313:1522): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nginx comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+[root@selinux ~]# grep nginx /var/log/audit/audit.log | audit2allow -M nginx
+******************** IMPORTANT ***********************
+To make this policy package active, execute:
+
+semodule -i nginx.pp
+
+[root@selinux ~]# semodule -i nginx.pp
+[root@selinux ~]# 
+[root@selinux ~]# systemctl start nginx
+[root@selinux ~]# 
+[root@selinux ~]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Mon 2023-07-10 06:59:47 UTC; 7s ago
+  Process: 23544 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 23542 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 23541 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 23546 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─23546 nginx: master process /usr/sbin/nginx
+           └─23547 nginx: worker process
+
+Jul 10 06:59:47 selinux systemd[1]: Starting The nginx HTTP and reverse pr.....
+Jul 10 06:59:47 selinux nginx[23542]: nginx: the configuration file /etc/n...ok
+Jul 10 06:59:47 selinux nginx[23542]: nginx: configuration file /etc/nginx...ul
+Jul 10 06:59:47 selinux systemd[1]: Started The nginx HTTP and reverse pro...r.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@selinux ~]# curl http://127.0.0.1:4881
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Welcome to CentOS</title>
+  <style rel="stylesheet" type="text/css"> 
+
+        html {
+        background-image:url(img/html-background.png);
+        background-color: white;
+        font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+        font-size: 0.85em;
+        line-height: 1.25em;
+        margin: 0 4% 0 4%;
+        }
+
+        body {
+        border: 10px solid #fff;
+        margin:0;
+        padding:0;
+        background: #fff;
+        }
+
+        /* Links */
+
+        a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+        a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+        a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+        a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+        .logo a:link,
+        .logo a:hover,
+        .logo a:visited { border-bottom: none; }
+
+        .mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+        .mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+        .mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+        .mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+        /* User interface styles */
+
+        #header {
+        margin:0;
+        padding: 0.5em;
+        background: #204D8C url(img/header-background.png);
+        text-align: left;
+        }
+
+        .logo {
+        padding: 0;
+        /* For text only logo */
+        font-size: 1.4em;
+        line-height: 1em;
+        font-weight: bold;
+        }
+
+        .logo img {
+        vertical-align: middle;
+        padding-right: 1em;
+        }
+
+        .logo a {
+        color: #fff;
+        text-decoration: none;
+        }
+
+        p {
+        line-height:1.5em;
+        }
+
+        h1 { 
+                margin-bottom: 0;
+                line-height: 1.9em; }
+        h2 { 
+                margin-top: 0;
+                line-height: 1.7em; }
+
+        #content {
+        clear:both;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        border-bottom: 5px solid #eee;
+        }
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div id="header">
+
+    <ul class="mainlinks">
+        <li> <a href="http://www.centos.org/">Home</a> </li>
+        <li> <a href="http://wiki.centos.org/">Wiki</a> </li>
+        <li> <a href="http://wiki.centos.org/GettingHelp/ListInfo">Mailing Lists</a></li>
+        <li> <a href="http://www.centos.org/download/mirrors/">Mirror List</a></li>
+        <li> <a href="http://wiki.centos.org/irc">IRC</a></li>
+        <li> <a href="https://www.centos.org/forums/">Forums</a></li>
+        <li> <a href="http://bugs.centos.org/">Bugs</a> </li>
+        <li class="last"> <a href="http://wiki.centos.org/Donate">Donate</a></li>
+    </ul>
+
+        <div class="logo">
+                <a href="http://www.centos.org/"><img src="img/centos-logo.png" border="0"></a>
+        </div>
+
+</div>
+
+<div id="content">
+
+        <h1>Welcome to CentOS</h1>
+
+        <h2>The Community ENTerprise Operating System</h2>
+
+        <p><a href="http://www.centos.org/">CentOS</a> is an Enterprise-class Linux Distribution derived from sources freely provided
+to the public by Red Hat, Inc. for Red Hat Enterprise Linux.  CentOS conforms fully with the upstream vendors
+redistribution policy and aims to be functionally compatible. (CentOS mainly changes packages to remove upstream vendor
+branding and artwork.)</p>
+
+        <p>CentOS is developed by a small but growing team of core
+developers.&nbsp; In turn the core developers are supported by an active user community
+including system administrators, network administrators, enterprise users, managers, core Linux contributors and Linux enthusiasts from around the world.</p>
+
+        <p>CentOS has numerous advantages including: an active and growing user community, quickly rebuilt, tested, and QA'ed errata packages, an extensive <a href="http://www.centos.org/download/mirrors/">mirror network</a>, developers who are contactable and responsive, Special Interest Groups (<a href="http://wiki.centos.org/SpecialInterestGroup/">SIGs</a>) to add functionality to the core CentOS distribution, and multiple community support avenues including a <a href="http://wiki.centos.org/">wiki</a>, <a
+href="http://wiki.centos.org/irc">IRC Chat</a>, <a href="http://wiki.centos.org/GettingHelp/ListInfo">Email Lists</a>, <a href="https://www.centos.org/forums/">Forums</a>, <a href="http://bugs.centos.org/">Bugs Database</a>, and an <a
+href="http://wiki.centos.org/FAQ/">FAQ</a>.</p>
+
+        </div>
+
+</div>
+
+
+</body>
+</html>
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# 
+[root@selinux ~]# semodule -l
+abrt    1.4.1
+accountsd       1.1.0
+acct    1.6.0
+afs     1.9.0
+aiccu   1.1.0
+aide    1.7.1
+ajaxterm        1.0.0
+alsa    1.12.2
+amanda  1.15.0
+amtu    1.3.0
+anaconda        1.7.0
+antivirus       1.0.0
+apache  2.7.2
+apcupsd 1.9.0
+apm     1.12.0
+application     1.2.0
+arpwatch        1.11.0
+asterisk        1.12.1
+auditadm        2.2.0
+authconfig      1.0.0
+authlogin       2.5.1
+automount       1.14.1
+avahi   1.14.1
+awstats 1.5.0
+bacula  1.2.0
+base    (null)
+bcfg2   1.1.0
+bind    1.13.1
+bitlbee 1.5.0
+blkmapd 1.0.0
+blueman 1.1.0
+bluetooth       3.5.0
+boinc   1.1.1
+boltd   1.0.0
+bootloader      1.14.0
+brctl   1.7.0
+brltty  1.0.0
+bugzilla        1.1.0
+bumblebee       1.0.0
+cachefilesd     1.1.0
+calamaris       1.8.0
+callweaver      1.1.0
+canna   1.12.0
+ccs     1.6.0
+cdrecord        2.6.0
+certmaster      1.3.0
+certmonger      1.2.0
+certwatch       1.8.0
+cfengine        1.1.0
+cgdcbxd 1.0.0
+cgroup  1.2.0
+chrome  1.0.0
+chronyd 1.2.0
+cinder  1.0.0
+cipe    1.6.0
+clock   1.7.0
+clogd   1.1.0
+cloudform       1.0
+cmirrord        1.1.0
+cobbler 1.2.0
+cockpit 1.0.0
+collectd        1.0.0
+colord  1.1.0
+comsat  1.8.0
+condor  1.0.1
+conman  1.0.0
+consolekit      1.9.0
+container       1.0.0
+couchdb 1.1.1
+courier 1.14.0
+cpucontrol      1.4.0
+cpufreqselector 1.4.0
+cpuplug 1.0.0
+cron    2.6.3
+ctdb    1.1.0
+cups    1.16.2
+cvs     1.10.2
+cyphesis        1.3.0
+cyrus   1.13.1
+daemontools     1.3.0
+dbadm   1.1.0
+dbskk   1.6.0
+dbus    1.19.0
+dcc     1.12.0
+ddclient        1.10.0
+denyhosts       1.1.0
+devicekit       1.3.1
+dhcp    1.11.0
+dictd   1.8.0
+dirsrv  1.0.0
+dirsrv-admin    1.0.0
+dmesg   1.3.0
+dmidecode       1.5.1
+dnsmasq 1.10.0
+dnssec  1.0.0
+dovecot 1.16.1
+drbd    1.1.0
+dspam   1.1.0
+entropyd        1.8.0
+exim    1.6.1
+fail2ban        1.5.0
+fcoe    1.1.0
+fetchmail       1.13.2
+finger  1.10.0
+firewalld       1.1.1
+firewallgui     1.1.0
+firstboot       1.13.0
+fprintd 1.2.0
+freeipmi        1.0.0
+freqset 1.0.0
+fstools 1.16.1
+ftp     1.15.1
+games   2.3.0
+ganesha 1.0.0
+gdomap  1.0.1
+geoclue 1.0.0
+getty   1.10.0
+git     1.3.2
+gitosis 1.4.0
+glance  1.1.0
+glusterd        1.1.2
+gnome   2.3.0
+gpg     2.8.0
+gpm     1.9.0
+gpsd    1.2.0
+gssproxy        1.0.0
+guest   1.3.0
+hddtemp 1.2.0
+hostname        1.8.1
+hsqldb  1.0.0
+hwloc   1.0.0
+hypervkvp       1.0.0
+icecast 1.2.0
+inetd   1.13.0
+init    1.20.1
+inn     1.11.0
+iodine  1.1.0
+iotop   1.0.0
+ipa     1.0.0
+ipmievd 1.0.0
+ipsec   1.14.0
+iptables        1.14.0
+irc     2.3.1
+irqbalance      1.6.0
+iscsi   1.9.0
+isns    1.0.0
+jabber  1.10.0
+jetty   1.0.0
+jockey  1.0.0
+journalctl      1.0.0
+kdump   1.3.0
+kdumpgui        1.2.0
+keepalived      1.0.0
+kerberos        1.12.0
+keyboardd       1.1.0
+keystone        1.1.0
+kismet  1.7.0
+kmscon  1.0
+kpatch  1.0.0
+ksmtuned        1.1.1
+ktalk   1.9.2
+l2tp    1.1.0
+ldap    1.11.1
+libraries       2.10.0
+likewise        1.3.0
+linuxptp        1.0.0
+lircd   1.2.0
+livecd  1.3.0
+lldpad  1.1.0
+loadkeys        1.9.0
+locallogin      1.12.0
+lockdev 1.5.0
+logadm  1.0.0
+logging 1.20.1
+logrotate       1.15.0
+logwatch        1.12.2
+lpd     1.14.0
+lsm     1.0.0
+lttng-tools     1.0.0
+lvm     1.15.2
+mailman 1.10.0
+mailscanner     1.1.0
+man2html        1.0.0
+mandb   1.1.1
+mcelog  1.2.0
+mediawiki       1.0.0
+memcached       1.3.1
+milter  1.5.0
+minidlna        0.1
+minissdpd       1.0.0
+mip6d   1.0.0
+mirrormanager   1.0.0
+miscfiles       1.11.0
+mock    1.0.0
+modemmanager    1.2.1
+modutils        1.14.0
+mojomojo        1.1.0
+mon_statd       1.0.0
+mongodb 1.1.0
+motion  1.0.0
+mount   1.16.1
+mozilla 2.8.0
+mpd     1.1.1
+mplayer 2.5.0
+mrtg    1.9.0
+mta     2.7.3
+munin   1.9.1
+mysql   1.14.1
+mythtv  1.0.0
+nagios  1.13.0
+namespace       1.0.0
+ncftool 1.2.0
+netlabel        1.3.0
+netutils        1.12.1
+networkmanager  1.15.2
+nginx   1.0
+ninfod  1.0.0
+nis     1.12.0
+nova    1.0.0
+nscd    1.11.0
+nsd     1.8.0
+nslcd   1.4.1
+ntop    1.10.0
+ntp     1.11.0
+numad   1.1.0
+nut     1.3.0
+nx      1.7.0
+obex    1.0.0
+oddjob  1.10.0
+openct  1.6.1
+opendnssec      1.0.0
+openhpid        1.0.0
+openshift       1.0.0
+openshift-origin        1.0.0
+opensm  1.0.0
+openvpn 1.12.2
+openvswitch     1.1.1
+openwsman       1.0.0
+oracleasm       1.0.0
+osad    1.0.0
+pads    1.1.0
+passenger       1.1.1
+pcmcia  1.7.0
+pcp     1.0.0
+pcscd   1.8.0
+pegasus 1.9.0
+permissivedomains       (null)
+pesign  1.0.0
+pingd   1.1.0
+piranha 1.0.0
+pkcs    1.0.1
+pki     10.0.11
+plymouthd       1.2.0
+podsleuth       1.7.0
+policykit       1.3.0
+polipo  1.1.1
+portmap 1.11.0
+portreserve     1.4.0
+postfix 1.15.1
+postgresql      1.16.0
+postgrey        1.9.0
+ppp     1.14.0
+prelink 1.11.0
+prelude 1.4.0
+privoxy 1.12.0
+procmail        1.13.1
+prosody 1.0.0
+psad    1.1.0
+ptchown 1.2.0
+publicfile      1.2.0
+pulseaudio      1.6.0
+puppet  1.4.0
+pwauth  1.0.0
+qmail   1.6.1
+qpid    1.1.0
+quantum 1.1.0
+quota   1.6.0
+rabbitmq        1.0.2
+radius  1.13.0
+radvd   1.14.0
+raid    1.13.1
+rasdaemon       1.0.0
+rdisc   1.8.0
+readahead       1.13.0
+realmd  1.1.0
+redis   1.0.1
+remotelogin     1.8.0
+rhcs    1.2.1
+rhev    1.0
+rhgb    1.9.0
+rhnsd   1.0.0
+rhsmcertd       1.1.1
+ricci   1.8.0
+rkhunter        1.0
+rlogin  1.11.3
+rngd    1.1.0
+roundup 1.8.0
+rpc     1.15.1
+rpcbind 1.6.1
+rpm     1.16.0
+rshd    1.8.1
+rssh    2.3.0
+rsync   1.13.0
+rtas    1.0.0
+rtkit   1.2.0
+rwho    1.7.0
+samba   1.16.3
+sambagui        1.2.0
+sandboxX        1.0.0
+sanlock 1.1.0
+sasl    1.15.1
+sbd     1.0.0
+sblim   1.1.0
+screen  2.6.0
+secadm  2.4.0
+sectoolm        1.1.0
+selinuxutil     1.17.2
+sendmail        1.12.1
+sensord 1.0.0
+setrans 1.8.0
+setroubleshoot  1.12.1
+seunshare       1.1.0
+sge     1.0.0
+shorewall       1.4.0
+slocate 1.12.2
+slpd    1.1.0
+smartmon        1.12.0
+smokeping       1.2.0
+smoltclient     1.2.0
+smsd    1.0.0
+snapper 1.0.0
+snmp    1.14.0
+snort   1.11.0
+sosreport       1.3.1
+soundserver     1.9.0
+spamassassin    2.6.1
+speech-dispatcher       1.0.0
+squid   1.12.1
+ssh     2.4.2
+sssd    1.2.0
+staff   2.4.0
+stapserver      1.1.0
+stunnel 1.11.0
+su      1.12.0
+sudo    1.10.0
+svnserve        1.1.0
+swift   1.0.0
+sysadm  2.6.1
+sysadm_secadm   1.0.0
+sysnetwork      1.15.4
+sysstat 1.8.0
+systemd 1.0.0
+tangd   1.0.0
+targetd 1.0.0
+tcpd    1.5.0
+tcsd    1.1.1
+telepathy       1.4.2
+telnet  1.11.3
+tftp    1.13.0
+tgtd    1.3.1
+thin    1.0
+thumb   1.0.0
+tlp     1.0.0
+tmpreaper       1.7.1
+tomcat  1.0.0
+tor     1.9.0
+tuned   1.2.0
+tvtime  2.3.0
+udev    1.16.2
+ulogd   1.3.0
+uml     2.3.0
+unconfined      3.5.0
+unconfineduser  1.0.0
+unlabelednet    1.0.0
+unprivuser      2.4.0
+updfstab        1.6.0
+usbmodules      1.3.0
+usbmuxd 1.2.0
+userdomain      4.9.1
+userhelper      1.8.1
+usermanage      1.19.0
+usernetctl      1.7.0
+uucp    1.13.0
+uuidd   1.1.0
+varnishd        1.2.0
+vdagent 1.1.1
+vhostmd 1.1.0
+virt    1.5.0
+vlock   1.2.0
+vmtools 1.0.0
+vmware  2.7.0
+vnstatd 1.1.0
+vpn     1.16.0
+w3c     1.1.0
+watchdog        1.8.0
+wdmd    1.1.0
+webadm  1.2.0
+webalizer       1.13.0
+wine    1.11.0
+wireshark       2.4.0
+xen     1.13.0
+xguest  1.2.0
+xserver 3.9.4
+zabbix  1.6.0
+zarafa  1.2.0
+zebra   1.13.0
+zoneminder      1.0.0
+zosremote       1.2.0
+[root@selinux ~]# semodule -r nginx
+libsemanage.semanage_direct_remove_key: Removing last nginx module (no other nginx module exists at another priority).
+
+Часть 2
